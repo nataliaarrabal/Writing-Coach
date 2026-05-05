@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Coach — Job Application · Telecomunicaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E2DED6;
+    --border-strong: #C8C2B8;
+    --text-primary: #1A1814;
+    --text-secondary: #6B6560;
+    --text-muted: #9E9890;
+    --accent: #1A3A5C;
+    --accent-light: #EBF2FA;
+    --accent-mid: #3D6FA3;
+    --green: #1D5C3A;
+    --green-light: #EBF5EE;
+    --amber: #7A4A0A;
+    --amber-light: #FDF3E3;
+    --red: #8B2020;
+    --red-light: #FDEAEA;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --radius: 8px;
+    --radius-lg: 14px;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    background: var(--accent);
+    color: #fff;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-brand {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+  }
+  .topbar-right {
+    font-size: 12px;
+    opacity: 0.6;
+    font-family: var(--mono);
+  }
+
+  /* ── Layout ── */
+  .page {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 52px);
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+  }
+
+  @media (max-width: 760px) {
+    .page { grid-template-columns: 1fr; padding: 1rem; }
+    .sidebar { display: none; }
+    .sidebar.mobile-show { display: block; }
+  }
+
+  /* ── Sidebar ── */
+  .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+  .job-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    position: sticky;
+    top: 72px;
+  }
+  .job-company {
+    font-size: 10px;
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .job-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .job-location {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+  }
+  .job-divider { height: 0.5px; background: var(--border); margin-bottom: 14px; }
+  .job-section-label {
+    font-size: 10px;
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+  .tag {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 3px 9px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 4px;
+    border: 0.5px solid #C5D9EF;
+  }
+  .requirement {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 6px 0;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    gap: 8px;
+  }
+  .requirement:last-child { border-bottom: none; }
+  .req-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .tips-card {
+    background: var(--amber-light);
+    border: 0.5px solid #E8C98A;
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+  }
+  .tips-card .tips-title {
+    font-size: 11px;
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 8px;
+  }
+  .tip { font-size: 12px; color: #5C3A08; line-height: 1.5; padding: 5px 0; border-bottom: 0.5px solid #E8C98A; }
+  .tip:last-child { border-bottom: none; }
+
+  /* ── Main area ── */
+  .main { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .main-header { margin-bottom: 0.25rem; }
+  .main-header h1 { font-size: 22px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+  .main-header p { font-size: 14px; color: var(--text-secondary); }
+
+  /* ── Rounds ── */
+  .rounds-track {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .round-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .round-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    right: -50%;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .round-item.done:not(:last-child)::after { background: var(--green); }
+  .round-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    position: relative; z-index: 1;
+    transition: all 0.2s;
+  }
+  .round-item.active .round-circle {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  .round-item.done .round-circle {
+    border-color: var(--green);
+    background: var(--green);
+    color: #fff;
+  }
+  .round-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    text-align: center;
+    font-family: var(--mono);
+  }
+  .round-item.active .round-name { color: var(--accent); }
+  .round-item.done .round-name { color: var(--green); }
+
+  /* ── Writing area ── */
+  .writing-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .writing-card-header {
+    padding: 12px 1.25rem;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+  }
+  .writing-card-header-left { font-size: 12px; color: var(--text-secondary); font-family: var(--mono); }
+  .word-count { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+  .writing-card-body { padding: 0; }
+  textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 1.25rem;
+    font-size: 14px;
+    line-height: 1.8;
+    border: none;
+    outline: none;
+    background: var(--surface);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    resize: vertical;
+    display: block;
+  }
+  textarea::placeholder { color: var(--text-muted); font-style: italic; }
+  .writing-card-footer {
+    padding: 12px 1.25rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+  }
+
+  button {
+    font-family: var(--sans);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-submit {
+    padding: 9px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    letter-spacing: 0.02em;
+  }
+  .btn-submit:hover { background: #2a5278; }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-next {
+    padding: 8px 18px;
+    font-size: 13px;
+    background: var(--green-light);
+    color: var(--green);
+    border: 0.5px solid #8ECBAA;
+    border-radius: var(--radius);
+    font-weight: 500;
+  }
+  .btn-next:hover { background: #D4EDDC; }
+
+  .loading-indicator {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot-pulse { display: flex; gap: 4px; }
+  .dot-pulse span {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--text-muted);
+    animation: pulse 1.2s infinite;
+  }
+  .dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+  .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
+
+  /* ── Feedback ── */
+  .feedback-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .feedback-header {
+    padding: 12px 1.25rem;
+    background: var(--accent-light);
+    border-bottom: 0.5px solid #C5D9EF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .feedback-badge {
+    font-size: 10px;
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .feedback-subtitle { font-size: 12px; color: var(--accent); }
+  .feedback-body {
+    padding: 1.25rem;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+  }
+  .feedback-footer {
+    padding: 12px 1.25rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+  .badge-green { background: var(--green-light); color: var(--green); border: 0.5px solid #8ECBAA; }
+  .badge-amber { background: var(--amber-light); color: var(--amber); border: 0.5px solid #E8C98A; }
+  .badge-red { background: var(--red-light); color: var(--red); border: 0.5px solid #E8AAAA; }
+
+  /* ── Completion ── */
+  .completion-card {
+    background: var(--green-light);
+    border: 0.5px solid #8ECBAA;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+  }
+  .completion-card h3 { font-size: 18px; font-weight: 500; color: var(--green); margin-bottom: 8px; }
+  .completion-card p { font-size: 14px; color: #2D6E48; }
+  .btn-restart {
+    margin-top: 1rem;
+    padding: 9px 22px;
+    font-size: 13px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 500;
+  }
+  .btn-restart:hover { background: #164d2f; }
+
+  /* ── Instruction banner ── */
+  .instruction-banner {
+    background: var(--accent-light);
+    border: 0.5px solid #C5D9EF;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+  .instruction-banner strong { font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-brand">WRITING COACH · TELECOMUNICACIONES</span>
+  <span class="topbar-right">AI-assisted · 3 rondas</span>
+</div>
+
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="job-card">
+      <div class="job-company">Vodafone Spain</div>
+      <div class="job-title">Graduate RF Network Engineer</div>
+      <div class="job-location">Madrid · Full-time · Graduate</div>
+      <div class="job-divider"></div>
+      <div class="job-section-label">Skills requeridas</div>
+      <div class="tags">
+        <span class="tag">5G NR</span>
+        <span class="tag">RF Planning</span>
+        <span class="tag">Python</span>
+        <span class="tag">KPI Analysis</span>
+        <span class="tag">Drive Tests</span>
+        <span class="tag">MATLAB</span>
+        <span class="tag">LTE</span>
+        <span class="tag">Atoll</span>
+      </div>
+      <div class="job-section-label">Requisitos</div>
+      <div class="requirement"><span class="req-dot"></span><span>Degree in Telecommunications Engineering or equivalent</span></div>
+      <div class="requirement"><span class="req-dot"></span><span>Strong analytical and problem-solving skills</span></div>
+      <div class="requirement"><span class="req-dot"></span><span>English proficiency (B2 minimum)</span></div>
+      <div class="requirement"><span class="req-dot"></span><span>Knowledge of radio propagation principles</span></div>
+    </div>
+
+    <div class="tips-card">
+      <div class="tips-title">Recuerda incluir</div>
+      <div class="tip">Por qué esta empresa y este rol específico</div>
+      <div class="tip">Proyectos o prácticas relevantes con resultados concretos</div>
+      <div class="tip">Vocabulario técnico del sector (usa los tags de la oferta)</div>
+      <div class="tip">Tono formal pero no rígido — profesional en inglés</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="main-header">
+      <h1>Job Application Writing Coach</h1>
+      <p>La IA no corrige tu texto — te da pistas para que lo mejores tú.</p>
+    </div>
+
+    <!-- Rounds tracker -->
+    <div class="rounds-track">
+      <div class="round-item active" id="round-item-1">
+        <div class="round-circle">1</div>
+        <div class="round-name">Diagnóstico</div>
+      </div>
+      <div class="round-item" id="round-item-2">
+        <div class="round-circle">2</div>
+        <div class="round-name">Revisión</div>
+      </div>
+      <div class="round-item" id="round-item-3">
+        <div class="round-circle">3</div>
+        <div class="round-name">Evaluación</div>
+      </div>
+    </div>
+
+    <!-- Instruction banner -->
+    <div class="instruction-banner" id="instruction-banner">
+      <strong>Ronda 1 — Primer borrador:</strong> Escribe tu cover letter sin ayuda. No te preocupes por que sea perfecta — el objetivo es tener un punto de partida real para trabajar.
+    </div>
+
+    <!-- Writing area -->
+    <div class="writing-card" id="writing-card">
+      <div class="writing-card-header">
+        <span class="writing-card-header-left">cover_letter_draft_r<span id="round-label">1</span>.txt</span>
+        <span class="word-count" id="word-count">0 words</span>
+      </div>
+      <div class="writing-card-body">
+        <textarea id="draft" placeholder="Dear Hiring Manager,
+
+I am writing to apply for the Graduate RF Network Engineer position at Vodafone Spain...
+
+[Continúa aquí — mínimo 150 palabras]"></textarea>
+      </div>
+      <div class="writing-card-footer">
+        <button class="btn-submit" id="submit-btn" onclick="submitDraft()">Get feedback →</button>
+        <div class="loading-indicator" id="loading" style="display:none">
+          <span>Analizando</span>
+          <div class="dot-pulse"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback area -->
+    <div id="feedback-area"></div>
+
+    <!-- Completion -->
+    <div id="completion-area"></div>
+
+  </main>
+</div>
+
+<script>
+let currentRound = 1;
+let drafts = {};
+
+const textarea = document.getElementById('draft');
+textarea.addEventListener('input', () => {
+  const w = textarea.value.trim().split(/\s+/).filter(x => x).length;
+  document.getElementById('word-count').textContent = w + ' words';
+});
+
+const instructions = {
+  1: '<strong>Ronda 1 — Primer borrador:</strong> Escribe tu cover letter sin ayuda. No te preocupes por que sea perfecta — el objetivo es tener un punto de partida real para trabajar.',
+  2: '<strong>Ronda 2 — Revisión:</strong> Lee el feedback de la Ronda 1 y reescribe tu carta. No copies las sugerencias directamente — reformúlalo con tus propias palabras.',
+  3: '<strong>Ronda 3 — Versión final:</strong> Última oportunidad de mejora. Revisa el tono, el vocabulario técnico y que la estructura sea clara. Luego envía para evaluación final.'
+};
+
+const systemPrompts = {
+  1: `You are a writing coach helping a telecommunications engineering student improve their English job application letter. The student is applying for a Graduate RF Network Engineer position at Vodafone Spain. Required skills include: 5G NR, RF Planning, Python, KPI Analysis, Drive Tests, MATLAB, LTE, Atoll.
+
+Your role is NOT to rewrite the text. Instead:
+1. Identify the 2-3 most important issues (structure, register, missing technical vocabulary, vague descriptions, grammar patterns)
+2. For each issue, give a specific hint or guiding question — never the corrected version
+3. Ask 1-2 questions to push the student to think about what they could add or change
+4. Keep your tone encouraging but honest
+
+Format your response exactly like this (use the emoji headers):
+
+🔍 PROBLEMAS PRINCIPALES
+[List 2-3 issues with brief explanations, no more than 2 sentences each]
+
+💡 PISTAS PARA MEJORAR
+[For each issue, one specific hint or question — not the answer]
+
+❓ REFLEXIONA ANTES DE REVISAR
+[1-2 questions to reflect on]
+
+Keep the total under 280 words. Respond entirely in Spanish.`,
+
+  2: `You are a writing coach reviewing the SECOND DRAFT of a telecommunications engineering student's cover letter for a Graduate RF Network Engineer position at Vodafone Spain.
+
+Compare with a typical revision. Focus on: professional register, use of technical telecoms vocabulary (5G NR, RF planning, KPI, drive tests, Atoll, MATLAB), specificity of achievements/skills, and the closing paragraph.
+
+Format exactly like this:
+
+✅ QUÉ MEJORÓ
+[1-2 things that got better, be specific]
+
+⚠️ QUÉ SIGUE SIN FUNCIONAR
+[2 specific areas with targeted hints — no rewrites]
+
+🎯 PARA LA VERSIÓN FINAL
+[One concrete piece of advice — be direct]
+
+Keep under 220 words. Respond in Spanish.`,
+
+  3: `You are evaluating the FINAL DRAFT of a telecommunications engineering student's cover letter for a Graduate RF Network Engineer position at Vodafone Spain.
+
+Evaluate on 4 criteria:
+1. Registro profesional en inglés (tono formal, adecuado para empresa UK/Spain)
+2. Vocabulario técnico de telecomunicaciones (5G, RF, KPIs, herramientas)
+3. Estructura y coherencia (apertura, cuerpo, cierre)
+4. Especificidad (proyectos, logros, habilidades concretas)
+
+For each criterion give: a rating (Necesita trabajo / Aceptable / Sólido) and one sentence of feedback.
+
+Format exactly like this:
+
+📊 EVALUACIÓN FINAL
+
+1. Registro profesional: [rating] — [one sentence]
+2. Vocabulario técnico: [rating] — [one sentence]
+3. Estructura: [rating] — [one sentence]
+4. Especificidad: [rating] — [one sentence]
+
+📝 VALORACIÓN GLOBAL
+[3 sentences of overall assessment]
+
+💼 CONSEJO FINAL
+[One actionable tip for future applications]
+
+Respond in Spanish. Be honest and constructive.`
+};
+
+async function submitDraft() {
+  const text = textarea.value.trim();
+  const wordCount = text.split(/\s+/).filter(x => x).length;
+  if (wordCount < 80) {
+    alert('Escribe al menos 80 palabras antes de enviar.');
+    return;
+  }
+
+  drafts[currentRound] = text;
+
+  const submitBtn = document.getElementById('submit-btn');
+  submitBtn.disabled = true;
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('feedback-area').innerHTML = '';
+
+  const userMessages = {
+    1: `Here is my cover letter draft:\n\n${text}`,
+    2: `Here is my revised cover letter (second draft):\n\n${text}`,
+    3: `Here is my final cover letter:\n\n${text}`
+  };
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompts[currentRound],
+        messages: [{ role: 'user', content: userMessages[currentRound] }]
+      })
+    });
+
+    const data = await resp.json();
+    const feedback = data.content.map(b => b.text || '').join('');
+
+    renderFeedback(feedback);
+    updateRoundTracker('done', currentRound);
+
+    textarea.disabled = true;
+    submitBtn.style.display = 'none';
+
+  } catch (e) {
+    document.getElementById('feedback-area').innerHTML = `<div class="instruction-banner" style="border-color:#E8AAAA;background:#FDEAEA;color:#8B2020;">
+      Error al conectar con la IA. Recarga la página e inténtalo de nuevo.</div>`;
+  }
+
+  submitBtn.disabled = false;
+  document.getElementById('loading').style.display = 'none';
+}
+
+function renderFeedback(text) {
+  const area = document.getElementById('feedback-area');
+
+  const subtitles = {
+    1: 'Diagnóstico de tu primer borrador',
+    2: 'Análisis de tu revisión',
+    3: 'Evaluación final'
+  };
+
+  let footerHTML = '';
+  if (currentRound < 3) {
+    footerHTML = `<div class="feedback-footer">
+      <button class="btn-next" onclick="nextRound()">Pasar a Ronda ${currentRound + 1} →</button>
+      <span style="font-size:12px;color:var(--text-muted);font-family:var(--mono);">Revisa el feedback antes de continuar</span>
+    </div>`;
+  } else {
+    footerHTML = `<div class="feedback-footer">
+      <span class="badge badge-green">✓ Actividad completada</span>
+    </div>`;
+    setTimeout(showCompletion, 300);
+  }
+
+  area.innerHTML = `
+    <div class="feedback-card">
+      <div class="feedback-header">
+        <span class="feedback-badge">Ronda ${currentRound}</span>
+        <span class="feedback-subtitle">${subtitles[currentRound]}</span>
+      </div>
+      <div class="feedback-body">${escapeHTML(text)}</div>
+      ${footerHTML}
+    </div>`;
+}
+
+function nextRound() {
+  currentRound++;
+  textarea.disabled = false;
+  textarea.value = drafts[currentRound - 1] || '';
+  const w = textarea.value.trim().split(/\s+/).filter(x => x).length;
+  document.getElementById('word-count').textContent = w + ' words';
+  document.getElementById('round-label').textContent = currentRound;
+  document.getElementById('instruction-banner').innerHTML = instructions[currentRound];
+  document.getElementById('submit-btn').style.display = 'inline-block';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('feedback-area').innerHTML = '';
+  updateRoundTracker('active', currentRound);
+  textarea.focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateRoundTracker(state, round) {
+  const item = document.getElementById(`round-item-${round}`);
+  if (state === 'done') {
+    item.className = 'round-item done';
+    item.querySelector('.round-circle').innerHTML = '✓';
+  } else if (state === 'active') {
+    item.className = 'round-item active';
+    item.querySelector('.round-circle').textContent = round;
+  }
+}
+
+function showCompletion() {
+  document.getElementById('completion-area').innerHTML = `
+    <div class="completion-card">
+      <h3>¡Actividad completada!</h3>
+      <p>Has completado las 3 rondas del writing coach. Compara tus borradores y reflexiona sobre cómo evolucionó tu texto.</p>
+      <button class="btn-restart" onclick="location.reload()">Empezar de nuevo</button>
+    </div>`;
+}
+
+function escapeHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
